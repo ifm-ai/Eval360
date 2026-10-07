@@ -1,0 +1,25 @@
+remote_model:
+  base_name: k2-v2
+  path: IFM/K2-V2
+  revision: null
+model_type: base
+parser_type: boxed
+name_modifier: reasoning
+ready: true
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 300
+max_time_to_deploy: 3600
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "8"
+  - "--trust-remote-code"
+openai_kwargs:
+  max_tokens: 32768
+  temperature: 1.0
+  stop:
+    - "</s>"
+    - "</answer>"
+owner: "<OWNER>"
+output_path: k2_base_results 

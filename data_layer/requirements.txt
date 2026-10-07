@@ -1,0 +1,7 @@
+numpy
+requests
+pyyaml
+jinja2
+datasets
+sacrebleu
+evaluate

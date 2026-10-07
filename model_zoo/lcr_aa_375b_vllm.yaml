@@ -1,0 +1,54 @@
+remote_model:
+  base_name: lcr-aa-mid5-ablation2-step0000600
+  path: "<MODEL_CHECKPOINT_PATH>"
+  revision: null
+
+model_type: instruct
+parser_type: think_suffix
+name_modifier: null
+tag: lcr_aa_375b
+
+container_image: "/<CONTAINER_IMAGES>/vllm-serving.sqsh"
+max_simultaneous_requests: 8
+max_time_to_deploy: 7200
+allow_long_max_model_len: true
+
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - --dtype
+  - bfloat16
+  - --seed
+  - "0"
+  - --tensor-parallel-size
+  - "8"
+  - --distributed-executor-backend
+  - mp
+  - --enable-expert-parallel
+  - --all2all-backend
+  - allgather_reducescatter
+  - --gpu-memory-utilization
+  - "0.95"
+  - --max-model-len
+  - "524288"
+  - --max-num-seqs
+  - "8"
+  - --enable-chunked-prefill
+  - --max-num-batched-tokens
+  - "32768"
+  - --enable-prefix-caching
+  - --model-impl
+  - vllm
+  - --trust-remote-code
+  - --reasoning-parser
+  # Pre-release reasoning parser. The closest public one is vLLM's k2_horizon, which differs on truncated and malformed outputs.
+  - "<REASONING_PARSER>"
+  - --enforce-eager
+
+# LCR-AA request settings live in group_zoo/lcr_aa.yaml. Keep this empty so
+# top_p, top_k, min_p, seed, stop, and penalty request fields remain omitted.
+openai_kwargs: {}
+
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

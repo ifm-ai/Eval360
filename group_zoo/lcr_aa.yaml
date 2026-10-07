@@ -1,0 +1,14 @@
+version: 1
+owner: "<OWNER>"
+groups:
+  - name: lcr-aa-official
+    model_tag: lcr_aa_375b
+    data_tag: lcr_aa
+    parser_type: think_suffix
+    output_root: "/<OUTPUT_ROOT>/lcr_aa"
+    openai_overrides:
+      temperature: 1.0
+      max_tokens: 400000
+      extra_body:
+        chat_template_kwargs:
+          reasoning_effort: high

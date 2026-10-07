@@ -1,0 +1,42 @@
+# GPQA AA profile for the mid4-v2 checkpoint_0006000 run.
+remote_model:
+  base_name: gpqa-aa-375b-checkpoint
+  path: IFM/K2-Horizon-375B-A23B
+  revision: mid_4_6000
+
+model_type: instruct
+parser_type: noop  # Overridden by group_zoo/gpqa_diamond_aa.yaml.
+name_modifier: gpqa-aa
+tag: gpqa_375b
+
+container_image: "/<CONTAINER_IMAGES>/vllm-serving.sqsh"
+max_simultaneous_requests: 24
+max_time_to_deploy: 7200
+allow_long_max_model_len: true
+
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - --tensor-parallel-size
+  - "8"
+  - --max-model-len
+  - "163840"
+  - --max-num-seqs
+  - "32"
+  - --gpu-memory-utilization
+  - "0.90"
+  - --trust-remote-code
+  - --reasoning-parser
+  # Pre-release reasoning parser. The closest public one is vLLM's k2_horizon, which differs on truncated and malformed outputs.
+  - "<REASONING_PARSER>"
+
+openai_kwargs: {}
+
+# # Optional system prompt. Uncommenting it changes the evaluation contract,
+# # so leave it disabled to reproduce the AA baseline.
+# prompt_prefix_instructions: >-
+#   I am K2 Horizon, a large language model. Please reason step by step, and put your final answer option within \boxed{}. Only put the letter in the box, e.g. \boxed{A}.
+
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

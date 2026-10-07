@@ -1,0 +1,19 @@
+uuid: gpqa_diamond_aa
+grader:
+  type: multiple_choice
+average_over:
+  - 16
+pass_at:
+  - 1
+dataset_name: gpqa_diamond_aa
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/gpqa-diamond-aa/*.jsonl@main"
+semantic_version: 1.0.0
+num_generations: 198
+tag: gpqa_diamond_aa
+meta:
+  benchmark: gpqa_diamond
+  prompt_contract: aa
+  data_sha256: cc07f659546f4fd0746b579fce63ea3998e64e77337dd3d4a6ab9437be624926
+  upstream_source_sha256: f517f6e4551df5baeaa5d7cd092594137dac580dc7e20c7472616f9a7f522cc5
+  split: test
+  fewshot: 0

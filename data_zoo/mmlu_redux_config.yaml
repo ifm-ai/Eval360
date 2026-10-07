@@ -1,0 +1,16 @@
+uuid: "mmlu_redux"
+grader:
+  type: multiple_choice
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "mmlu_redux"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/mmlu-redux/*.jsonl"
+semantic_version: "1.0.0"
+num_generations: 3000
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source: "edinburgh-dawg/mmlu-redux"

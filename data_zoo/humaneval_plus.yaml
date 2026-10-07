@@ -1,0 +1,14 @@
+uuid: humaneval_plus
+mode: "instruct"
+grader:
+  type: humaneval-plus-daytona
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "humaneval_plus"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/humaneval_plus/humaneval_plus.jsonl"
+semantic_version: "1.0.0"
+num_generations: null
+meta:
+  fewshot: 0

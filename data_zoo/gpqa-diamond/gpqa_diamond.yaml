@@ -1,0 +1,15 @@
+uuid: "gpqa_diamond"
+grader:
+  type: multiple_choice
+average_over:
+  - 16
+pass_at:
+  - 1
+dataset_name: "gpqa_diamond"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/gpqa-diamond/*.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 198
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0

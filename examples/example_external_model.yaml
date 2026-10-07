@@ -1,0 +1,37 @@
+# External model config — points to a pre-existing OpenAI-compatible API endpoint.
+# No Slurm job is submitted. Works on a laptop.
+#
+# Usage:
+#   export OPENAI_API_KEY=sk-...
+#   eval360 --max-grading-parallelism 20 evaluate-now \
+#     --no-slurm \
+#     --model-paths examples/example_external_model.yaml \
+#     --data-paths data_zoo/bbh.yaml
+
+external_model:
+  base_name: gpt-4o               # short name used in output filenames
+  base_url: https://api.openai.com/v1  # full base URL including /v1
+  api_key_env: OPENAI_API_KEY     # env var name (not the key itself)
+  requests_per_minute: 500        # optional token-bucket rate limit; omit if not needed
+  # Safety values are type-checked before Pydantic coercion: booleans and
+  # numeric strings are rejected. Request/deadline values are capped at 7200
+  # seconds and backoff values at 60 seconds. An explicit
+  # --external-total-deadline-seconds value above 7200 overrides the total
+  # deadline for the run, including resumed models.
+  retry_policy:
+    max_attempts: 4
+    request_timeout_seconds: 120
+    total_deadline_seconds: 300
+    initial_backoff_seconds: 1
+    max_backoff_seconds: 30
+    jitter: full                  # full | equal | decorrelated
+
+model_type: instruct              # instruct (chat) or base (completions)
+parser_type: noop
+max_simultaneous_requests: 20     # max concurrent in-flight requests
+openai_kwargs:
+  temperature: 0.0
+  max_tokens: 2048
+owner: your.name
+ready: true
+output_path: ./output

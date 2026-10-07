@@ -1,0 +1,23 @@
+uuid: "mmlu_pro"
+grader:
+  type: multiple_choice
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "mmlu_pro"
+data_path: "__EVAL360_DATASET_ROOT__/2f926def94ae9516d311380678121cca173afd46/data/mmlu-pro/mmlu_pro.jsonl"
+semantic_version: "1.0.0"
+num_generations: 12032
+mode: base
+enabled: true
+tag: k2_horizon_7b_base_full_mmlu_pro
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source_repository: "<HF_ORG>/<EVAL_SOURCES_REPO>"
+  source_revision: "2f926def94ae9516d311380678121cca173afd46"
+  source_path: "data/mmlu-pro/mmlu_pro.jsonl"
+  source_size_bytes: 22722936
+  source_sha256: "31749ae33e77378dfc064a99389cc32f35546d4c094ffe7f039e264b73a8b8ba"

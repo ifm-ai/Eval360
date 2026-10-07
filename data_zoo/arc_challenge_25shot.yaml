@@ -1,0 +1,16 @@
+uuid: "arc_challenge_25shot"
+grader:
+  type: multiple_choice
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "arc_challenge_25shot"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/arc-challenge/arc_challenge_25shot.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 1172
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 25
+  subset: "ARC-Challenge"

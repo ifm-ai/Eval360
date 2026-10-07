@@ -1,0 +1,9 @@
+uuid: bfcl
+dataset_name: bfcl
+semantic_version: "4.0.0"
+imported_dataset:
+  name: bfcl
+  commit: f7cf7359b7ac615a0b294831c5ba2bc95ee4a000
+  args:
+    test_category: all_scoring
+    save_raw_inference: true

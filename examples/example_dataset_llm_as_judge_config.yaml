@@ -1,0 +1,36 @@
+uuid: "example_llm_as_judge"
+grader:
+  type: multiple_choice
+  llm_as_judge:
+    remote_model:
+      base_name: llama-3.3-70b-instruct
+      path: meta-llama/Llama-3.3-70B-Instruct
+      revision: null
+    model_type: instruct
+    name_modifier: null
+    parser_type: noop
+    venv_path: /path/to/vllm-venv/bin/activate
+    max_simultaneous_requests: 180
+    max_time_to_deploy: 900
+    serving_slurm_resources:
+      gpus_per_node: 8  # equals --tensor-parallel-size
+    vllm_cli_args:
+      - --tensor-parallel-size 8
+      - --gpu-memory-utilization 0.95
+    openai_kwargs:
+      extra_body: {"chat_template_kwargs": {"reasoning_effort": "low"}}
+      temperature: 1.0
+    ready: true
+    output_path: /path/to/output
+
+average_over:
+  - 1
+  - 16
+pass_at:
+  - 1
+dataset_name: "example_llm_as_judge"
+data_path: "hf://your-org/your-dataset/*.jsonl"
+semantic_version: "1.0.0"
+num_generations: 1000
+meta:
+  fewshot: 0

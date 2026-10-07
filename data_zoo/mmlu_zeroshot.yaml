@@ -1,0 +1,17 @@
+uuid: "mmlu_zeroshot"
+grader:
+  type: multiple_choice
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "mmlu_zeroshot"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/mmlu_zeroshot/mmlu_zeroshot.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 14042
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source: "lm-eval-harness mmlu_flan_cot_zeroshot, repromptted to MMLU-Pro style"
+  prompt_format: "Think step by step and then finish your answer with 'the answer is (X)' where X is the correct letter choice."

@@ -1,0 +1,14 @@
+uuid: "mbpp-plus"
+grader:
+  type: mbpp-daytona
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "mbpp-plus"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/mbpp-plus/mbpp_plus.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 378
+meta:
+  source: "evalplus/evalplus"
+  evalplus_version: "v0.2.0"

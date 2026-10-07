@@ -1,0 +1,21 @@
+remote_model:
+  base_name: qwen3.5-4b-base
+  path: Qwen/Qwen3.5-4B
+  revision: null
+model_type: base
+parser_type: noop
+name_modifier: null
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "8"
+  - "--trust-remote-code"
+openai_kwargs:
+  temperature: 0.0
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

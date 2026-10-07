@@ -1,0 +1,60 @@
+uuid: lcr_aa_official_bdae010b
+mode: instruct
+dataset_name: lcr_aa
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/lcr_aa/lcr_aa.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 100
+enabled: true
+tag: lcr_aa
+
+average_over:
+  - 3
+pass_at:
+  - 1
+
+grader:
+  type: lcr_aa
+  llm_as_judge:
+    remote_model:
+      base_name: qwen3-235b-a22b-instruct-2507
+      path: Qwen/Qwen3-235B-A22B-Instruct-2507
+      revision: null
+    model_type: instruct
+    parser_type: noop
+    name_modifier: null
+    container_image: "/<CONTAINER_IMAGES>/vllm-serving.sqsh"
+    max_simultaneous_requests: 8
+    max_time_to_deploy: 3600
+    allow_long_max_model_len: true
+    serving_slurm_resources:
+      gpus_per_node: 8  # equals --tensor-parallel-size
+    vllm_cli_args:
+      - --dtype
+      - bfloat16
+      - --tensor-parallel-size
+      - "8"
+      - --distributed-executor-backend
+      - mp
+      - --gpu-memory-utilization
+      - "0.90"
+      - --max-model-len
+      - "262144"
+      - --max-num-seqs
+      - "1"
+      - --enable-chunked-prefill
+      - --enable-prefix-caching
+      - --enforce-eager
+    openai_kwargs:
+      temperature: 0.0
+      max_tokens: 16384
+      n: 1
+    ready: true
+
+meta:
+  split: test
+  priority: high
+  fewshot: 0
+  source: ArtificialAnalysis/AA-LCR
+  source_revision: bdae010bbce259820c0e34c1d7cce210d966fb75
+  source_dataset_sha256: c7e2777e7b47de6832127e8401aec85f3e1c52bdd0c95b984eb11d1c3282b31c
+  prompt_variant: official

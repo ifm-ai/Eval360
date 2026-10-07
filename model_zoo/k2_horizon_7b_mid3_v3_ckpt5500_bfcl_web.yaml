@@ -1,0 +1,44 @@
+remote_model:
+  base_name: k2-horizon-7b-mid3-v3-ckpt5500-bfcl-web
+  path: IFM/K2-Horizon-7B
+  revision: mid_3_5500
+
+model_type: base
+parser_type: noop
+name_modifier: null
+
+container_image: "/<CONTAINER_IMAGES>/vllm-serving.sqsh"
+container_mounts:
+  - "/<EVAL360_CHECKOUT>:/<EVAL360_CHECKOUT>"
+max_simultaneous_requests: 10
+max_time_to_deploy: 1800
+allow_long_max_model_len: true
+
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "8"
+  - "--trust-remote-code"
+  - "--max-model-len"
+  - "524288"
+  - "--enable-auto-tool-choice"
+  - "--tool-call-parser"
+  # Pre-release tool-call parser. The closest public one is vLLM's k2_horizon, which differs on truncated and malformed outputs.
+  - "<TOOL_CALL_PARSER>"
+  - "--reasoning-parser"
+  # Pre-release reasoning parser. The closest public one is vLLM's k2_horizon, which differs on truncated and malformed outputs.
+  - "<REASONING_PARSER>"
+
+openai_kwargs:
+  temperature: 0.01
+  max_tokens: 8192
+  extra_body:
+    chat_template_kwargs:
+      reasoning_effort: high
+      tool_presentation_format: xml
+      tool_call_format: xml
+
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

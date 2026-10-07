@@ -1,0 +1,21 @@
+uuid: "aptbench"
+grader:
+  type: aptbench
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "aptbench"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/aptbench/*.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 3651
+meta:
+  source: "APTBench (https://github.com/TencentYoutuResearch/APTBench)"
+  domains: "SWE (EnvSetup, IssueFix), DR (Closed-ended, Open-ended)"
+  total_subtasks: 10
+  # Paper category mapping (Section 2.3):
+  #   SWE / EnvSetup  (Planning)       : env_setup/{plan, error}
+  #   SWE / IssueFix  (Planning+Action): issue_fix/{locate, fix_patch, test_patch}
+  #   DR  / Closed-ended Planning      : deepresearch/{plan_en, plan_zh}
+  #   DR  / Closed-ended Action        : deepresearch/{summ_ans_en, summ_ans_zh}
+  #   DR  / Open-ended Planning        : deepresearch/openend_plan_en

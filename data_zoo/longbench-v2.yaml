@@ -1,0 +1,14 @@
+uuid: "longbench-v2"
+grader:
+  type: multiple-choice
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "longbench-v2"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/longbench-v2/*.jsonl@main"
+semantic_version: "1.0.0"
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0

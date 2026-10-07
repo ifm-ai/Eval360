@@ -1,0 +1,18 @@
+version: 1
+owner: "<OWNER>"
+groups:
+  - name: hle-aa
+    model_tag: hle_375b
+    data_tag: hle_aa
+    parser_type: noop  # HLE-AA mixes MC and exactMatch rows; parsing happens in its grader.
+    output_root: "/<OUTPUT_ROOT>"
+    # The data config owns the grader so its nested gpt-oss judge configuration
+    # is preserved when this group is resolved.
+    openai_overrides:
+      max_tokens: 131072
+      temperature: 1.0
+      top_p: 1.0
+      top_k: -1
+      extra_body:
+        chat_template_kwargs:
+          reasoning_effort: high

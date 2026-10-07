@@ -1,0 +1,14 @@
+uuid: "ruler_8k"
+grader:
+  type: ruler
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "ruler_8k"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/ruler/8k/*.jsonl@main"
+semantic_version: "1.0.0"
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0

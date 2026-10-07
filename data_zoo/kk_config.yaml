@@ -1,0 +1,15 @@
+uuid: "kk"
+grader:
+  type: kk
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "kk"
+data_path: "<DATASET_ROOT>/kk/*.jsonl"
+semantic_version: "1.0.0"
+num_generations: 700
+meta:
+  task: "determine knight/knave identity from logical statements"
+  num_problems: 700
+  difficulty: "2-8 people"

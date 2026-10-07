@@ -1,0 +1,37 @@
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/lcr/*.jsonl@main"
+dataset_name: "lcr"
+uuid: lcr_march05
+grader:
+  type: llm_as_judge_lcr
+  llm_as_judge:
+    remote_model:
+      base_name: qwen3-32b-test
+      path: Qwen/Qwen3-32B
+      revision: null
+    parser_type: think_tag
+    model_type: instruct 
+    name_modifier: null 
+    venv_path: "/<SERVING_VENV>/bin/activate"
+    max_simultaneous_requests: 180
+    max_time_to_deploy: 900
+    serving_slurm_resources:
+      gpus_per_node: 8  # equals --tensor-parallel-size
+    vllm_cli_args:
+      - --tensor-parallel-size 8
+      - --gpu-memory-utilization 0.95
+    openai_kwargs:
+      extra_body: {"chat_template_kwargs": {"reasoning_effort": "medium"}}
+      temperature: 0.2
+      max_tokens: 4096
+    ready: true
+
+semantic_version: "1.0.0"
+num_generations: 100
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+average_over:
+  - 1
+pass_at:
+  - 1

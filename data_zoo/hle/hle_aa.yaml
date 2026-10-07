@@ -1,0 +1,55 @@
+uuid: hle_aa
+grader:
+  type: hle_aa
+  llm_as_judge:
+    remote_model:
+      base_name: gptoss-20b
+      path: openai/gpt-oss-20b
+      revision: null
+    model_type: instruct
+    parser_type: noop
+    name_modifier: null
+    container_image: "/<CONTAINER_IMAGES>/vllm-serving.sqsh"
+    max_simultaneous_requests: 32
+    max_time_to_deploy: 7200
+    allow_long_max_model_len: true
+    serving_slurm_resources:
+      gpus_per_node: 8  # equals --tensor-parallel-size
+    vllm_cli_args:
+      - --tensor-parallel-size
+      - "8"
+      - --max-model-len
+      - "131072"
+      - --max-num-seqs
+      - "32"
+      - --gpu-memory-utilization
+      - "0.90"
+      - --trust-remote-code
+    openai_kwargs:
+      temperature: 0.0
+      max_tokens: 16384
+    ready: true
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: hle_aa
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/hle/hle_aa.jsonl@main"
+semantic_version: 1.0.0
+num_generations: 2158
+tag: hle_aa
+meta:
+  benchmark: hle
+  prompt_contract: aa
+  data_sha256: 4a3f00076432d142cc88ed2df0a332868d4945d4cbbc60d0e07c511fed5117d2
+  upstream_source_sha256: f517f6e4551df5baeaa5d7cd092594137dac580dc7e20c7472616f9a7f522cc5
+  split: test
+  fewshot: 0
+  text_only: true
+  answer_type_counts:
+    multipleChoice: 513
+    exactMatch: 1645
+  judge_contract:
+    max_attempts: 6
+    timeout_seconds: 600
+    max_response_chars: 120000

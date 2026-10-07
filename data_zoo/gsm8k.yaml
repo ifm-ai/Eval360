@@ -1,0 +1,15 @@
+uuid: "gsm8k"
+grader:
+  type: math-verify
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "gsm8k"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/gsm8k/*.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 1319
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0

@@ -1,0 +1,15 @@
+uuid: "mmlu_pro_small"
+grader:
+  type: multiple_choice
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "mmlu_pro_small"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/mmlu-pro/mmlu_pro_small.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 100
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0

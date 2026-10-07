@@ -1,0 +1,25 @@
+uuid: "bbh_zeroshot"
+grader:
+  type: bbh
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "bbh_zeroshot"
+data_path: "__EVAL360_DATASET_ROOT__/2f926def94ae9516d311380678121cca173afd46/data/bbh_zeroshot/bbh_zeroshot.jsonl"
+semantic_version: "1.0.0"
+num_generations: 6511
+mode: base
+enabled: true
+tag: k2_horizon_7b_base_full_bbh_zeroshot
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source: "lm-eval-harness bbh_cot_zeroshot (per-subtask 'Q: <input>\\nA: Let's think step by step.' prompt, 27 subtasks merged)"
+  note: "graded by the 'bbh' grader, which dispatches lm-eval per-subtask extraction filters keyed on meta.subtask."
+  source_repository: "<HF_ORG>/<EVAL_SOURCES_REPO>"
+  source_revision: "2f926def94ae9516d311380678121cca173afd46"
+  source_path: "data/bbh_zeroshot/bbh_zeroshot.jsonl"
+  source_size_bytes: 7673438
+  source_sha256: "2c3b87401a7b45ca21eff1da90d53e1a1ffa8482b64e94d10c89dacdffa29e72"

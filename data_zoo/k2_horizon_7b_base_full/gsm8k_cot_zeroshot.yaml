@@ -1,0 +1,24 @@
+uuid: "gsm8k_zeroshot"
+grader:
+  type: math-verify
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "gsm8k_zeroshot"
+data_path: "__EVAL360_DATASET_ROOT__/2f926def94ae9516d311380678121cca173afd46/data/gsm8k_cot_zeroshot/gsm8k_cot_zeroshot.jsonl"
+semantic_version: "1.0.0"
+num_generations: 1319
+mode: base
+enabled: true
+tag: k2_horizon_7b_base_full_gsm8k_cot_zeroshot
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source: "lm-eval-harness gsm8k_cot_zeroshot (Q:/A: Let's think step by step.)"
+  source_repository: "<HF_ORG>/<EVAL_SOURCES_REPO>"
+  source_revision: "2f926def94ae9516d311380678121cca173afd46"
+  source_path: "data/gsm8k_cot_zeroshot/gsm8k_cot_zeroshot.jsonl"
+  source_size_bytes: 863235
+  source_sha256: "642925848b6e3d3c3e94db0b9a35fcca1ac1946dcb845fee3475a4d32260111e"

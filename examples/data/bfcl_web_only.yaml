@@ -1,0 +1,12 @@
+uuid: bfcl_web_only
+dataset_name: bfcl_web_only
+semantic_version: "4.0.0"
+imported_dataset:
+  name: bfcl
+  commit: f7cf7359b7ac615a0b294831c5ba2bc95ee4a000
+  args:
+    test_category: web_search
+    save_raw_inference: true
+    num_threads: 10
+    web_search_backend: serper
+    web_search_api_keys_file: .search_api_keys

@@ -1,0 +1,22 @@
+remote_model:
+  base_name: k2-v2-instruct
+  path: IFM/K2-V2-Instruct
+  revision: null
+model_type: instruct
+name_modifier: null
+ready: true
+parser_type: noop
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 60
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - --tensor-parallel-size 8
+  - --gpu-memory-utilization 0.95
+openai_kwargs:
+  extra_body:
+    reasoning_effort: "high"
+  temperature: 0.0
+owner: "<OWNER>"
+output_path: "/<OUTPUT_ROOT>"

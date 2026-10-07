@@ -1,0 +1,22 @@
+remote_model:
+  base_name: qwen2.5-72b
+  path: Qwen/Qwen2.5-72B
+  revision: null
+model_type: base
+parser_type: answer_tag
+name_modifier: null
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "8"
+  - "--trust-remote-code"
+openai_kwargs:
+  temperature: 0.7
+  max_tokens: 8192
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

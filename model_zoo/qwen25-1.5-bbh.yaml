@@ -1,0 +1,24 @@
+remote_model:
+  base_name: qwen25-1.5B
+  path: Qwen/Qwen2.5-1.5B
+  revision: null
+model_type: base
+parser_type: so_the_answer_is
+name_modifier: -bbh-sotheansweris
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 1  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "1"
+  - "--trust-remote-code"
+openai_kwargs:
+  max_tokens: 1024
+  temperature: 0.0
+  stop: ["</s>", "Q", "\n\n"]
+  seed: 1234
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

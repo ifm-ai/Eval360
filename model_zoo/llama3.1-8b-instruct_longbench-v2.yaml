@@ -1,0 +1,24 @@
+remote_model:
+  base_name: llama3.1-8b-instruct
+  path: meta-llama/Llama-3.1-8B-Instruct
+  revision: null
+model_type: base 
+parser_type: longbench-v2
+name_modifier: null
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "8"
+  - "--trust-remote-code"
+openai_kwargs:
+  temperature: 0.0
+  max_tokens: 32
+  extra_body:
+    truncate_prompt_tokens: 131040
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

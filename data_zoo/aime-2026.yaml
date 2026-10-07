@@ -1,0 +1,20 @@
+uuid: "aime-2026"
+grader:
+  type: math-verify
+average_over:
+  - 32
+pass_at:
+  - 1
+  - 2
+  - 4
+  - 8
+  - 16
+  - 32
+dataset_name: "aime-2026"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/aime-2026/aime-2026.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 30
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0

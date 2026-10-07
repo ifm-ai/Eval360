@@ -1,0 +1,14 @@
+uuid: "sum"
+grader:
+  type: sum
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "sum"
+data_path: "<DATASET_ROOT>/sum/*.jsonl"
+semantic_version: "1.0.0"
+num_generations: 475
+meta:
+  task: "find integers satisfying sum and sum-of-squares constraints"
+  num_problems: 475

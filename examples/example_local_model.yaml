@@ -1,0 +1,26 @@
+local_model:
+  path_glob: "/<MODEL_ROOT>/*/<SUBDIR>/<SUBDIR>/"
+  model_family_name: k2-v2-think-grpo-32k54k-
+  version_level: -3
+model_type: instruct
+parser_type: boxed 
+name_modifier: 2x-rope
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 112
+#max_time_to_deploy: 600
+max_time_to_deploy: 180
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - --tensor-parallel-size 8
+  - --gpu-memory-utilization 0.95
+  - --rope-scaling '{"rope_type":"yarn","factor":2.0,"original_max_position_embeddings":131072}'
+  - --max-model-len 262144
+  - |
+    --override-generation-config '{"max_new_tokens": 262144}'
+openai_kwargs:
+  extra_body: {"chat_template_kwargs": {"reasoning_effort": "high"}}
+  temperature: 1.0
+owner: "<OWNER>"
+output_path: /path/to/some/directory
+ready: true

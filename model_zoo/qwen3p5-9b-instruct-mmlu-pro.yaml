@@ -1,0 +1,23 @@
+remote_model:
+  base_name: qwen3p5-9b-instruct
+  path: Qwen/Qwen3.5-9B
+  revision: null
+model_type: instruct
+parser_type: the_answer_is_last
+name_modifier: null
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 1  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "1"
+  - "--trust-remote-code"
+openai_kwargs:
+  max_tokens: 8192
+  temperature: 1.0
+  top_p: 0.95
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

@@ -1,0 +1,17 @@
+uuid: "bbh_zeroshot"
+grader:
+  type: bbh
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "bbh_zeroshot"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/bbh_zeroshot/bbh_zeroshot.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 6511
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source: "lm-eval-harness bbh_cot_zeroshot (per-subtask 'Q: <input>\\nA: Let's think step by step.' prompt, 27 subtasks merged)"
+  note: "graded by the 'bbh' grader, which dispatches lm-eval per-subtask extraction filters keyed on meta.subtask."

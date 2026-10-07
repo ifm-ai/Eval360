@@ -1,0 +1,24 @@
+remote_model:
+  base_name: k2-think-v2
+  path: IFM/K2-Think-V2
+  revision: null
+model_type: base
+parser_type: noop
+name_modifier: null
+container_image: "nvcr.io/nvidia/pytorch:24.01-py3"
+container_mounts:
+  - "/<SHARED_STORAGE>/models:/models:ro"
+  - "/<SHARED_STORAGE>/output:/output:rw"
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "8"
+  - "--trust-remote-code"
+openai_kwargs:
+  temperature: 0.0
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

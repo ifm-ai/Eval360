@@ -1,0 +1,22 @@
+uuid: "ifeval"
+grader:
+  type: ifeval
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "ifeval"
+data_path: "__EVAL360_DATASET_ROOT__/2f926def94ae9516d311380678121cca173afd46/data/ifeval/ifeval.jsonl"
+semantic_version: "1.0.0"
+num_generations: 541
+mode: base
+enabled: true
+tag: k2_horizon_7b_base_full_ifeval
+meta:
+  split: "test"
+  priority: "high"
+  source_repository: "<HF_ORG>/<EVAL_SOURCES_REPO>"
+  source_revision: "2f926def94ae9516d311380678121cca173afd46"
+  source_path: "data/ifeval/ifeval.jsonl"
+  source_size_bytes: 414380
+  source_sha256: "693eeecb76e639d5ba91be690178abed0ec1dab9d532353c76ad213f0c40597d"

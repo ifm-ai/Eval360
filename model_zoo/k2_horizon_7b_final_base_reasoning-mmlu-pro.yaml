@@ -1,0 +1,23 @@
+remote_model:
+  base_name: k2-horizon-7b-final-base
+  path: IFM/K2-Horizon-7B
+  revision: pretrain_1100000
+model_type: base
+parser_type: answer_tag
+name_modifier: "reasoning"
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 1  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "1"
+  - "--trust-remote-code"
+  - '--override-generation-config {"add_bos_token":true}'
+openai_kwargs:
+  max_tokens: 2048
+  temperature: 0.7
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

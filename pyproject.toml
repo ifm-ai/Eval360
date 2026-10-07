@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eval360"
+version = "0.1.0"
+requires-python = ">=3.14,<3.15"
+license = "Apache-2.0"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+authors = [{ name = "IFM" }]
+dependencies = [
+    "watchdog==6.0.0",
+    "pydantic==2.12.5",
+    "openai==2.14.0",
+    "aiohttp==3.13.2",
+    "aiofiles>=24.1.0",
+    "pyyaml==6.0.3",
+    "numpy==2.4.2",
+    "math-verify==0.9.0",
+    "sympy>=1.12",
+    "pylatexenc>=2.10",
+    "tqdm",
+    "huggingface_hub>=0.24",
+    "daytona-sdk>=0.150.0",
+    "absl-py==2.4.0",
+    "langdetect==1.0.9",
+    "immutabledict==4.3.1",
+    "nltk==3.9.4",
+]
+
+[project.scripts]
+eval360 = "scheduler.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["scheduler*"]
+
+[tool.setuptools.package-data]
+"scheduler.slurm" = ["*.sh"]
+
+[project.optional-dependencies]
+data = ["datasets>=3.0", "evalplus>=0.3.0"]
+test = ["pytest", "pytest-asyncio", "pytest-cov", "datasets>=3.0", "evalplus>=0.3.0"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--long"
+markers = [
+    "long: slow tests skipped in CI unless --long is passed",
+    # Requires a live Slurm cluster (slurmctld/slurmd/slurmdbd + sbatch on
+    # PATH). Auto-skipped when Slurm is absent, so a bare `pytest tests/` on a
+    # laptop stays green; the CI job that owns the suite enforces an execution
+    # floor so that skip cannot pass for a result. Bring the cluster up with
+    # `scripts/slurm_cluster.sh up`.
+    "cluster: requires the Slurm test cluster (scripts/slurm_cluster.sh)",
+]

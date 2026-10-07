@@ -1,0 +1,37 @@
+uuid: math500_reasoning
+mode: "base"
+average_over:
+  - 1
+pass_at:
+  - 1
+openai_settings: {}
+dataset_name: "math500_reasoning"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/math500/math500_reasoning.jsonl"
+semantic_version: "1.0.0"
+num_generations: 500
+enabled: true
+meta:
+  fewshot: 0
+grader:
+  type: math_verify_llm_as_judge
+  llm_as_judge:
+    remote_model:
+      base_name: gptoss-120b
+      path: openai/gpt-oss-120b
+      revision: null
+    model_type: instruct
+    parser_type: noop
+    name_modifier: null
+    venv_path: "/<SERVING_VENV>/bin/activate"
+    max_simultaneous_requests: 180
+    max_time_to_deploy: 3600
+    serving_slurm_resources:
+      gpus_per_node: 8  # equals --tensor-parallel-size
+    vllm_cli_args:
+      - "--tensor-parallel-size"
+      - "8"
+      - "--trust-remote-code"
+    openai_kwargs:
+      temperature: 0.0
+      max_tokens: 1024
+    ready: true

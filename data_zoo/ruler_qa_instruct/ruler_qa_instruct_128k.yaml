@@ -1,0 +1,16 @@
+uuid: "ruler_qa_instruct_128k"
+grader:
+  type: ruler
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "ruler_qa_instruct_128k"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/ruler_instruct/128k/ruler_qa_*.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 1000
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source: "ruler_instruct/128k/ruler_qa_{hotpot,squad}.jsonl -- chat-format QA subtasks only, for instruct-mode re-eval alongside base ruler"

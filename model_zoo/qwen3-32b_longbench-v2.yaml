@@ -1,0 +1,26 @@
+remote_model:
+  base_name: qwen3-32b
+  path: Qwen/Qwen3-32B
+  revision: null
+model_type: instruct
+parser_type: think_tag_mc
+name_modifier: longbench-v2
+venv_path: "/<SERVING_VENV>/bin/activate"
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size 8"
+  - "--trust-remote-code"
+  - '--rope-scaling {"rope_type":"yarn","factor":4.0,"original_max_position_embeddings":32768}'
+  - "--max-model-len 131072"
+  - '--override-generation-config {"max_new_tokens":131072}'
+openai_kwargs:
+  temperature: 0.6
+  max_tokens: 10240
+  extra_body:
+    truncate_prompt_tokens: 120832
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

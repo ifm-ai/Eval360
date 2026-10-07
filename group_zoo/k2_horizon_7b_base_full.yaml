@@ -1,0 +1,69 @@
+# Full K2 Horizon base suite over the immutable local Eval360 dataset snapshot.
+# Replace the quoted output placeholder with an absolute path before parsing.
+# Parsers are explicit per dataset so one shared model deployment can serve all
+# eight isolated eval pairs without changing their graders or sampling counts.
+version: 1
+owner: LLM360
+groups:
+  # AIME responses are prompted and scored as boxed mathematical answers.
+  - name: k2-horizon-base-aime-2026
+    model_tag: k2_horizon_7b_base_full
+    data_tag: k2_horizon_7b_base_full_aime_2026
+    parser_type: boxed
+    output_root: "__EVAL360_OUTPUT_ROOT__"
+    # AIME computes pass@k from 32 independent samples. OpenAI-compatible
+    # serving rejects n > 1 under greedy decoding, so sampling is explicit.
+    openai_overrides:
+      temperature: 0.7
+
+  # The BBH grader owns subtask-specific extraction and therefore receives raw text.
+  - name: k2-horizon-base-bbh-zeroshot
+    model_tag: k2_horizon_7b_base_full
+    data_tag: k2_horizon_7b_base_full_bbh_zeroshot
+    parser_type: passthrough
+    output_root: "__EVAL360_OUTPUT_ROOT__"
+
+  # GPQA is a generative multiple-choice benchmark.
+  - name: k2-horizon-base-gpqa-diamond
+    model_tag: k2_horizon_7b_base_full
+    data_tag: k2_horizon_7b_base_full_gpqa_diamond
+    parser_type: mc_answer
+    output_root: "__EVAL360_OUTPUT_ROOT__"
+    # GPQA averages 16 independent samples and therefore must not inherit the
+    # model's greedy single-sample default.
+    openai_overrides:
+      temperature: 1.0
+
+  # GSM8K's base-model prompt uses the established GSM8K answer forms.
+  - name: k2-horizon-base-gsm8k-cot-zeroshot
+    model_tag: k2_horizon_7b_base_full
+    data_tag: k2_horizon_7b_base_full_gsm8k_cot_zeroshot
+    parser_type: gsm8k_base
+    output_root: "__EVAL360_OUTPUT_ROOT__"
+
+  # IFEval grades the complete response against format and content constraints.
+  - name: k2-horizon-base-ifeval
+    model_tag: k2_horizon_7b_base_full
+    data_tag: k2_horizon_7b_base_full_ifeval
+    parser_type: passthrough
+    output_root: "__EVAL360_OUTPUT_ROOT__"
+
+  # The local MBPP grader extracts the first fenced block from the raw response.
+  - name: k2-horizon-base-mbpp-zeroshot
+    model_tag: k2_horizon_7b_base_full
+    data_tag: k2_horizon_7b_base_full_mbpp_zeroshot
+    parser_type: passthrough
+    output_root: "__EVAL360_OUTPUT_ROOT__"
+
+  # Both MMLU prompts ask a base model to finish with "the answer is (X)".
+  - name: k2-horizon-base-mmlu-pro
+    model_tag: k2_horizon_7b_base_full
+    data_tag: k2_horizon_7b_base_full_mmlu_pro
+    parser_type: the_answer_is
+    output_root: "__EVAL360_OUTPUT_ROOT__"
+
+  - name: k2-horizon-base-mmlu-zeroshot
+    model_tag: k2_horizon_7b_base_full
+    data_tag: k2_horizon_7b_base_full_mmlu_zeroshot
+    parser_type: the_answer_is
+    output_root: "__EVAL360_OUTPUT_ROOT__"

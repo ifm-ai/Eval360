@@ -1,0 +1,23 @@
+uuid: "gpqa_diamond"
+grader:
+  type: multiple_choice
+average_over:
+  - 16
+pass_at:
+  - 1
+dataset_name: "gpqa_diamond"
+data_path: "__EVAL360_DATASET_ROOT__/2f926def94ae9516d311380678121cca173afd46/data/gpqa-diamond/gpqa_diamond.jsonl"
+semantic_version: "1.0.0"
+num_generations: 198
+mode: base
+enabled: true
+tag: k2_horizon_7b_base_full_gpqa_diamond
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source_repository: "<HF_ORG>/<EVAL_SOURCES_REPO>"
+  source_revision: "2f926def94ae9516d311380678121cca173afd46"
+  source_path: "data/gpqa-diamond/gpqa_diamond.jsonl"
+  source_size_bytes: 314212
+  source_sha256: "66f387c172aabe10089de0d97dbe1d120fff4b55ab371746a633ca37ef088f59"

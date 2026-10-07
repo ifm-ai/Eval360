@@ -1,0 +1,16 @@
+uuid: "humaneval_v1"
+grader:
+  type: humaneval
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "humaneval"
+data_path: "<DATASET_ROOT>/humaneval/humaneval.jsonl"
+semantic_version: "1.0.0"
+num_generations: 164
+openai_settings:
+  stop: ["\nclass", "\ndef", "\n#", "\n@", "\nprint", "\nif __name__"]
+meta:
+  timeout: 10
+  source: "openai/human-eval"

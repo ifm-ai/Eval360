@@ -1,0 +1,28 @@
+uuid: "aime-2026"
+grader:
+  type: math-verify
+average_over:
+  - 32
+pass_at:
+  - 1
+  - 2
+  - 4
+  - 8
+  - 16
+  - 32
+dataset_name: "aime-2026"
+data_path: "__EVAL360_DATASET_ROOT__/2f926def94ae9516d311380678121cca173afd46/data/aime-2026/aime-2026.jsonl"
+semantic_version: "1.0.0"
+num_generations: 30
+mode: base
+enabled: true
+tag: k2_horizon_7b_base_full_aime_2026
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source_repository: "<HF_ORG>/<EVAL_SOURCES_REPO>"
+  source_revision: "2f926def94ae9516d311380678121cca173afd46"
+  source_path: "data/aime-2026/aime-2026.jsonl"
+  source_size_bytes: 26998
+  source_sha256: "99ac5daa50f01c2e5dc048a64331269b44a8f7016292863f21764387b819785e"

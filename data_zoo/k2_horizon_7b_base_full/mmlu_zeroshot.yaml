@@ -1,0 +1,25 @@
+uuid: "mmlu_zeroshot"
+grader:
+  type: multiple_choice
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "mmlu_zeroshot"
+data_path: "__EVAL360_DATASET_ROOT__/2f926def94ae9516d311380678121cca173afd46/data/mmlu_zeroshot/mmlu_zeroshot.jsonl"
+semantic_version: "1.0.0"
+num_generations: 14042
+mode: base
+enabled: true
+tag: k2_horizon_7b_base_full_mmlu_zeroshot
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source: "lm-eval-harness mmlu_flan_cot_zeroshot, repromptted to MMLU-Pro style"
+  prompt_format: "Think step by step and then finish your answer with 'the answer is (X)' where X is the correct letter choice."
+  source_repository: "<HF_ORG>/<EVAL_SOURCES_REPO>"
+  source_revision: "2f926def94ae9516d311380678121cca173afd46"
+  source_path: "data/mmlu_zeroshot/mmlu_zeroshot.jsonl"
+  source_size_bytes: 22244117
+  source_sha256: "76581f4e0fe24aa41d37fe7bffe90286065c017eef442271551e4c657a4ba9ed"

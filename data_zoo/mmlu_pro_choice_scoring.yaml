@@ -1,0 +1,16 @@
+uuid: "mmlu_pro_choice_scoring"
+grader:
+  type: choice_scoring
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "mmlu_pro"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/mmlu-pro/mmlu_pro.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 12032
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  scoring: "base-model-nll"

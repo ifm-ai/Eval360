@@ -1,0 +1,33 @@
+remote_model:
+  base_name: k2-horizon-7b-mid3-final
+  path: IFM/K2-Horizon-7B
+  revision: mid_3_5500
+
+model_type: instruct
+parser_type: noop
+name_modifier: null
+
+container_image: "/<CONTAINER_IMAGES>/vllm-serving.sqsh"
+max_simultaneous_requests: 64
+max_time_to_deploy: 1800
+allow_long_max_model_len: true
+
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "8"
+  - "--trust-remote-code"
+  - "--reasoning-parser"
+  - "deepseek_r1"
+
+openai_kwargs:
+  max_tokens: 30720
+  temperature: 1.0
+  top_p: 0.95
+  extra_body: {"chat_template_kwargs": {"reasoning_effort": "high"}}
+
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"
+tag: zeroshot_eval

@@ -1,0 +1,37 @@
+## command to run:
+# eval360 --max-generation-jobs 1 --max-grading-parallelism 20 evaluate-now --model-paths model_zoo/qwen3p5-397b-instruct-hle.yaml --data-paths data_zoo/hle/hle.yaml
+
+
+remote_model:
+  base_name: qwen3p5-397b-instruct
+  path: Qwen/Qwen3.5-397B-A17B
+  revision: null
+
+model_type: instruct
+parser_type: noop
+name_modifier: null
+
+conda_env: "vllm-serving"
+max_simultaneous_requests: 32
+max_time_to_deploy: 1800
+allow_long_max_model_len: true
+
+serving_slurm_resources:
+  gpus_per_node: 8  # equals --tensor-parallel-size
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "8"
+  - "--trust-remote-code"
+  - "--reasoning-parser"
+  - "qwen3"
+  - "--max-model-len"
+  - "147456"
+
+openai_kwargs:
+  max_tokens: 131072
+  temperature: 1.0
+  top_p: 0.95
+
+owner: "<OWNER>"
+ready: true
+output_path: "/<OUTPUT_ROOT>"

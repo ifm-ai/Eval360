@@ -1,0 +1,15 @@
+uuid: "lcbv6"
+grader:
+  type: lcbv6-daytona
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "lcbv6"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/lcbv6/lcbv6.jsonl"
+semantic_version: "1.0.0"
+num_generations: null
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 3

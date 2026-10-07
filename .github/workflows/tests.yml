@@ -1,0 +1,458 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install build tooling
+        run: |
+          uv pip install --system build "setuptools>=68" wheel
+
+      - name: Build package
+        run: |
+          python -m build --wheel --no-isolation
+          echo "Built wheel: $(ls dist/*.whl)"
+
+      - name: Verify package installs and CLI loads
+        run: |
+          uv pip install --system dist/*.whl
+          eval360 --help
+
+  # ---------------------------------------------------------------------------
+  # All test jobs run in parallel after build passes.
+  # uv cache makes the per-job install cheap.
+  # Each job saves its coverage XML as an artifact for the codecov job.
+  # ---------------------------------------------------------------------------
+
+  test-scheduler:
+    name: "Tests: scheduler"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install
+        run: uv pip install --system -e ".[test]" pytest-cov
+      - name: Run tests
+        env:
+          EVAL360_IN_MEMORY_DB: "true"
+        run: |
+          pytest \
+            tests/test_scheduler.py \
+            tests/test_job_manager.py \
+            tests/test_launch_requests.py \
+            tests/test_input_too_long.py \
+            tests/test_openai_interface.py \
+            tests/test_generation_errors.py \
+            tests/test_hf_data_path.py \
+            tests/test_progress.py \
+            tests/test_cli_logging.py \
+            tests/test_database.py \
+            tests/test_model_parser.py \
+            tests/test_task.py \
+            tests/test_utils.py \
+            tests/test_filesystem_manager.py \
+            tests/test_pydantic_models.py \
+            tests/test_external_retry_policy.py \
+            tests/test_external_request_identities.py \
+            tests/test_external_requests.py \
+            tests/test_rate_limiter.py \
+            tests/test_external_registration.py \
+            tests/test_external_ordinary_generation.py \
+            tests/test_external_choice_scoring.py \
+            tests/test_external_judge_reliability.py \
+            tests/test_debug_fields.py \
+            -v --cov=scheduler --cov-report=term-missing \
+            --override-ini="addopts="
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-scheduler
+          path: .coverage
+          include-hidden-files: true
+
+  test-graders-math:
+    name: "Tests: math graders"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install
+        run: uv pip install --system -e ".[test]" pytest-cov
+      - name: Run tests
+        env:
+          EVAL360_IN_MEMORY_DB: "true"
+        run: |
+          pytest \
+            tests/test_math_verify.py \
+            tests/test_math_verify_llm_as_judge.py \
+            tests/test_sympy_llm_as_judge.py \
+            tests/test_countdown_grader.py \
+            tests/test_sum_puzzle_grader.py \
+            tests/test_ruler_grader.py \
+            tests/test_knights_and_knaves_grader.py \
+            tests/test_order_puzzle_grader.py \
+            tests/test_match.py \
+            tests/test_multiple_choice_gpqa_smoke.py \
+            tests/test_llm_as_judge.py \
+            tests/test_choice_scoring.py \
+            tests/test_base_parsers.py \
+            tests/test_parser_registry.py \
+            tests/test_grader_registry.py \
+            tests/test_grader_import_errors.py \
+            tests/test_ifeval.py \
+            tests/test_ifeval_instructions.py \
+            -v --cov=scheduler --cov-report=term-missing \
+            --override-ini="addopts="
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-graders-math
+          path: .coverage
+          include-hidden-files: true
+
+  test-graders-code:
+    name: "Tests: code graders"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install
+        run: uv pip install --system -e ".[test]" pytest-cov
+      - name: Run tests
+        env:
+          EVAL360_IN_MEMORY_DB: "true"
+        run: |
+          pytest \
+            tests/test_aptbench.py \
+            tests/test_daytona_base.py \
+            tests/test_humaneval_grader.py \
+            tests/test_humaneval_plus_grader.py \
+            tests/test_lcbv6_daytona.py \
+            tests/test_mbpp_local.py \
+            tests/test_mbpp_daytona.py \
+            tests/test_bfcl_runner.py \
+            -v --cov=scheduler --cov-report=term-missing \
+            --override-ini="addopts="
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-graders-code
+          path: .coverage
+          include-hidden-files: true
+
+  test-imported-datasets:
+    name: "Tests: imported datasets"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install
+        run: uv pip install --system -e ".[test]" pytest-cov
+      - name: Run tests
+        env:
+          EVAL360_IN_MEMORY_DB: "true"
+        run: |
+          pytest \
+            tests/test_imported_dataset.py \
+            tests/test_imported_dataset_script.py \
+            tests/test_gpqa_builder.py \
+            tests/test_mmlu_pro_prep.py \
+            tests/test_validate_configs.py \
+            tests/test_persist_mbpp_plus.py \
+            -v --cov=scheduler --cov-report=term-missing \
+            --override-ini="addopts="
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-imported-datasets
+          path: .coverage
+          include-hidden-files: true
+
+  # ---------------------------------------------------------------------------
+  # The only job here that runs real sbatch/squeue/sinfo/sacct.
+  #
+  # WHAT IT COVERS THAT NOTHING ELSE DOES. Every other job mocks the Slurm
+  # boundary: `tests/test_job_manager.py` patches
+  # `asyncio.create_subprocess_exec` and feeds the parsers strings a test author
+  # typed, and `tests/fake_slurm.py` replaces `SlurmManager` with an in-memory
+  # reimplementation that duplicates its logic — so both copies can be wrong the
+  # same way and agree. Neither executes `scheduler/slurm/*.sh` at all. This job
+  # stands up a real single-node Slurm (slurmctld + slurmd + slurmdbd + MariaDB)
+  # in a container and points the real SlurmManager at it.
+  #
+  # NOTHING IS INSTALLED ON THE RUNNER. `scripts/slurm_cluster.sh` is the same
+  # command a developer runs locally, against the same image, so the cluster
+  # cannot behave one way here and another way on a laptop. It is also why this
+  # job does not depend on the runner being disposable: teardown is explicit.
+  #
+  # NOTE THE ABSENCE OF ANY `if:` OR PRESENCE GUARD. A step that skips when its
+  # inputs are missing reports success having tested nothing, and a job skipped
+  # by an `if:` reports `skipped`, which branch protection counts as passing. A
+  # renamed script here simply fails `docker exec`, which is red — so no
+  # file-presence guard is needed, and adding one would only create the hole.
+  slurm-cluster:
+    name: "Tests: Slurm cluster (real slurmd)"
+    needs: build
+    runs-on: ubuntu-latest
+    # Backstop against a wedged cluster leaving every job PENDING and burning
+    # the 6h default. The suite dominates (~7 min); bring-up is ~20s against the
+    # image cached by the build step below.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      # The tag is DERIVED FROM THE IMAGE'S INPUTS (Dockerfile + pyproject.toml
+      # + uv.lock), and `slurm_cluster.sh` is the only thing that knows how —
+      # recomputing the hash here in YAML would be a second implementation to
+      # keep in step, and the failure mode of it drifting is a CI job that
+      # builds one tag and runs another. Asking the script keeps that
+      # impossible.
+      - name: Resolve the content-derived image tag
+        id: image
+        run: echo "tag=$(bash scripts/slurm_cluster.sh image-tag)" >> "$GITHUB_OUTPUT"
+
+      # Built here rather than by `slurm_cluster.sh` so the layers can be
+      # cached: a cold build is minutes (apt + a CPython 3.14 install + this
+      # project's pinned dependencies), a warm one is seconds. `cmd_up` does
+      # `image_exists || build_image`, so it adopts this image and skips its own
+      # build — but ONLY because the tag it computes is the tag built here.
+      # Nothing else about the local and CI paths differs.
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        env:
+          # This action uploads a `.dockerbuild` build-record artifact by
+          # default. The `codecov` job downloads artifacts with no name filter,
+          # so that record landed in `coverage-data/` and failed the download
+          # ("Unable to download artifact(s) ... after 5 retries"), turning
+          # Coverage report red for a reason that had nothing to do with
+          # coverage. The record is of no use here; not producing it is the
+          # fix at this end. `codecov` is also given an explicit pattern below,
+          # so neither side depends on the other's good behaviour.
+          DOCKER_BUILD_RECORD_UPLOAD: "false"
+          DOCKER_BUILD_SUMMARY: "false"
+        with:
+          context: .
+          file: docker/slurm-ci/Dockerfile
+          tags: ${{ steps.image.outputs.tag }}
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Bring up the Slurm cluster
+        run: bash scripts/slurm_cluster.sh up
+
+      - name: Record the cluster toolchain
+        # Whatever versions land here are what a future pin would freeze, so
+        # they belong in the log even when everything passes.
+        run: |
+          bash scripts/slurm_cluster.sh exec bash -c '
+            sinfo --version
+            python3 --version
+            scontrol show config | grep -Ei "SLURM_VERSION|SelectType|GresTypes|AccountingStorageType"
+          '
+
+      # A gate nobody has watched go red is not evidence that it can. ~0.1s.
+      - name: Prove the execution floor can fail
+        run: python3 scripts/ci/assert_pytest_executed.py --self-test
+
+      - name: Run the cluster suite
+        # `--override-ini=addopts=` drops the repo default `--long`, matching
+        # every other test job here.
+        #
+        # The report goes to /scratch, not to the working tree: /workspace is
+        # bind-mounted READ-ONLY (see cmd_up) so that a test cannot mutate the
+        # checkout, and a relative --junitxml would land there. /scratch is the
+        # tmpfs provided for exactly this.
+        run: |
+          bash scripts/slurm_cluster.sh test tests/slurm -v \
+            --override-ini="addopts=" \
+            --junitxml=/scratch/cluster-report.xml
+
+      # `if: always()` so the report still comes out of a FAILED run — it is the
+      # record of what actually executed, and it is the run where that is worth
+      # knowing. (The floor step below is skipped when the suite fails, as
+      # before: the job is already red for a better reason.)
+      - name: Fetch the JUnit report out of the cluster
+        if: always()
+        run: |
+          bash scripts/slurm_cluster.sh exec \
+            cat /scratch/cluster-report.xml > cluster-report.xml
+
+      # WITHOUT THIS STEP THE JOB ABOVE IS NOT A GATE. `tests/slurm/conftest.py`
+      # skips the whole suite when sbatch is absent — correct on a laptop, where
+      # `pytest tests/` must not fail because Docker is not running. But pytest
+      # exits 0 when everything skips, so a cluster that never came up would
+      # report GREEN here. Verified both directions: with Slurm hidden, pytest
+      # exits 0 with every test skipped and this step exits 1.
+      #
+      # The floor is a minimum with margin, not a count: raise it when the suite
+      # grows. 106 tests today, in ten modules of 3-21 tests. 90 is chosen so
+      # that losing even the LARGEST module goes red (106 - 21 = 85 < 90) while
+      # ordinary churn does not. NOTE the floor must move with the suite: at the
+      # previous value of 80, losing that module would have left 85 and PASSED.
+      - name: Execution floor — a skipped suite is a FAILURE, not a pass
+        run: |
+          python3 scripts/ci/assert_pytest_executed.py \
+            cluster-report.xml --min 90 --label "slurm cluster"
+
+      # `if: always()` on purpose: the interesting run is the one that failed,
+      # and the daemon logs are the only place the reason exists.
+      - name: Cluster logs
+        if: always()
+        run: bash scripts/slurm_cluster.sh logs || true
+
+      - name: Tear down
+        if: always()
+        run: bash scripts/slurm_cluster.sh down || true
+
+  # ---------------------------------------------------------------------------
+  validate-configs:
+    name: "Validate config YAMLs"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install
+        run: uv pip install --system -e ".[test]"
+      - name: Validate model and dataset configs
+        run: python scripts/validate_configs.py
+
+  # ---------------------------------------------------------------------------
+  # Summary job satisfying the "test" branch protection required status check.
+  # Goes green only when all parallel test jobs pass.
+  # ---------------------------------------------------------------------------
+
+  test:
+    name: "Tests: all"
+    needs:
+      - test-scheduler
+      - test-graders-math
+      - test-graders-code
+      - test-imported-datasets
+      - validate-configs
+      # In `needs` so that a broken Slurm boundary blocks the merge.
+      - slurm-cluster
+    runs-on: ubuntu-latest
+    # `always()`, and an explicit verdict below, because WITHOUT THEM THIS JOB
+    # DOES NOT REPORT AT ALL WHEN IT MATTERS MOST.
+    #
+    # A job whose `needs` dependency fails is not run — GitHub marks it
+    # `skipped`. So on exactly the pull requests where a test job went red, this
+    # summary reported `skipped` rather than `failure`, which is both illegible
+    # in the UI ("1 failing, 1 skipped") and dependent on GitHub's semantics for
+    # a skipped REQUIRED check rather than on anything this repo controls.
+    #
+    # With `always()` the job runs regardless, inspects the results itself, and
+    # reports red. The check then says what happened instead of declining to
+    # speak.
+    if: always()
+    steps:
+      - name: Verdict
+        # `cancelled` and `skipped` are failures here too. A dependency that did
+        # not produce a result cannot be evidence that it passed, and treating
+        # "did not run" as "fine" is the whole class of bug this guards.
+        run: |
+          echo "scheduler:        ${{ needs.test-scheduler.result }}"
+          echo "math graders:     ${{ needs.test-graders-math.result }}"
+          echo "code graders:     ${{ needs.test-graders-code.result }}"
+          echo "imported datasets:${{ needs.test-imported-datasets.result }}"
+          echo "validate configs: ${{ needs.validate-configs.result }}"
+          echo "slurm cluster:    ${{ needs.slurm-cluster.result }}"
+          if ${{ contains(needs.*.result, 'failure')
+                 || contains(needs.*.result, 'cancelled')
+                 || contains(needs.*.result, 'skipped') }}; then
+            echo "::error::at least one test job did not succeed"
+            exit 1
+          fi
+          echo "All test jobs passed"
+
+  # ---------------------------------------------------------------------------
+  # Runs after all test jobs complete; downloads all coverage reports and
+  # uploads them together so Codecov sees a single complete picture.
+  # ---------------------------------------------------------------------------
+
+  codecov:
+    name: "Coverage report"
+    needs:
+      - test-scheduler
+      - test-graders-math
+      - test-graders-code
+      - test-imported-datasets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install coverage
+        run: uv pip install --system coverage
+      - uses: actions/download-artifact@v4
+        with:
+          path: coverage-data
+          # Only the coverage artifacts. Without a pattern this downloads
+          # EVERY artifact the run produced, so any job that starts publishing
+          # one — as the Slurm cluster job's docker build briefly did — gets
+          # pulled into coverage-data and can fail this job for an unrelated
+          # reason. The four names below are exactly what `coverage combine`
+          # consumes.
+          pattern: coverage-*
+      - name: Combine and report
+        run: |
+          coverage combine \
+            coverage-data/coverage-scheduler/.coverage \
+            coverage-data/coverage-graders-math/.coverage \
+            coverage-data/coverage-graders-code/.coverage \
+            coverage-data/coverage-imported-datasets/.coverage
+          coverage report --show-missing
+          coverage xml
+      - uses: codecov/codecov-action@v5
+        with:
+          files: coverage.xml
+          fail_ci_if_error: false

@@ -1,0 +1,17 @@
+uuid: "d3b4774b-cb15-45fe-9b2f-3e0910eeda8b"
+grader:
+  type: multiple_choice
+average_over:
+  - 1
+  - 3
+pass_at:
+  - 1
+  - 5
+dataset_name: "mmlu_philosophy"
+data_path: "{absolute_path_to_Eval360}/examples/data/mmlu_philosophy.jsonl"
+semantic_version: "1.0.0"
+num_generations: 311
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0

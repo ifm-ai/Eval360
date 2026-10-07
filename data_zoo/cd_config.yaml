@@ -1,0 +1,14 @@
+uuid: "countdown"
+grader:
+  type: cd
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "countdown"
+data_path: "<DATASET_ROOT>/countdown/*.jsonl"
+semantic_version: "1.0.0"
+num_generations: 1024
+meta:
+  task: "use given numbers with +,-,*,/ to reach target"
+  num_problems: 1024

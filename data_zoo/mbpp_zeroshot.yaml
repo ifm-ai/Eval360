@@ -1,0 +1,17 @@
+uuid: "mbpp_zeroshot"
+grader:
+  type: mbpp-local
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "mbpp_zeroshot"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/mbpp_zeroshot/mbpp_zeroshot.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 500
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0
+  source: "lm-eval-harness mbpp_instruct (--num-fewshot 0), post-processed to drop ```python prefill and add explicit 'wrap in code block' instruction"
+  note: "grader runs extracted code in a local subprocess with 10s timeout, no Daytona dependency"

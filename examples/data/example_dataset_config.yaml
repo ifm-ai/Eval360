@@ -1,0 +1,16 @@
+uuid: "example_dataset"
+grader:
+  type: multiple_choice
+average_over:
+  - 1
+  - 16
+pass_at:
+  - 1
+dataset_name: "example_dataset"
+data_path: "hf://your-org/your-dataset/*.jsonl"
+semantic_version: "1.0.0"
+num_generations: 1000
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 0

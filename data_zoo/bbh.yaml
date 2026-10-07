@@ -1,0 +1,15 @@
+uuid: "bbh_3shot"
+grader:
+  type: exact_match
+average_over:
+  - 1
+pass_at:
+  - 1
+dataset_name: "bbh"
+data_path: "hf://<HF_ORG>/<EVAL_SOURCES_REPO>/bbh/*.jsonl@main"
+semantic_version: "1.0.0"
+num_generations: 6511
+meta:
+  split: "test"
+  priority: "high"
+  fewshot: 3

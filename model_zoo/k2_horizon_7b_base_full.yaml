@@ -1,0 +1,35 @@
+# Eval-config model template for the K2 Horizon 7B base full suite.
+# The caller must replace both quoted placeholders with absolute installed paths.
+remote_model:
+  base_name: k2-horizon-7b-base
+  path: "/__EVAL360_HF_RELEASE_PATH__"
+  revision: null
+model_type: base
+parser_type: passthrough
+name_modifier: null
+venv_path: "/__EVAL360_SERVING_VENV_PATH__"
+serving_slurm_resources:
+  gpus_per_node: 1  # equals --tensor-parallel-size
+max_simultaneous_requests: 300
+max_time_to_deploy: 900
+allow_long_max_model_len: true
+vllm_cli_args:
+  - "--tensor-parallel-size"
+  - "1"
+  - "--trust-remote-code"
+  # The converter records the launcher's training sequence length in the HF
+  # config.  This suite deliberately serves with an 8K context, so override
+  # that runtime config before K2 constructs its rotary cache as well as
+  # setting vLLM's request-admission limit below.
+  - "--hf-overrides"
+  - '{"max_position_embeddings":8192}'
+  - "--max-model-len"
+  - "8192"
+  - '--override-generation-config {"add_bos_token":true}'
+openai_kwargs:
+  max_tokens: 2048
+  temperature: 0.0
+owner: LLM360
+ready: true
+output_path: "/__EVAL360_OUTPUT_ROOT__"
+tag: k2_horizon_7b_base_full
