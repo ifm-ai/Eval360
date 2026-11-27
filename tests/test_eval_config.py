@@ -1,5 +1,6 @@
 import base64
 import json
+import subprocess
 from unittest.mock import patch
 
 import pydantic
@@ -340,7 +341,14 @@ async def test_first_allocation_advertises_later_eval_pair_request_name(tmp_path
         log_dir=str(tmp_path),
         instance_id="deadbeef",
     )
-    with patch("asyncio.create_subprocess_exec", side_effect=fake_exec):
+    # the queue query runs squeue in a thread, not through asyncio
+    empty_queue = subprocess.CompletedProcess(
+        args=("squeue",), returncode=0, stdout=b"", stderr=b""
+    )
+    with (
+        patch("asyncio.create_subprocess_exec", side_effect=fake_exec),
+        patch.object(manager, "_query_squeue", return_value=empty_queue),
+    ):
         await manager.update_allocation(
             [(first.model, 1)],
             unneeded_models=[],

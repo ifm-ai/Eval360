@@ -64,6 +64,12 @@ def _conda_spec_dict(**overrides):
     return d
 
 
+def _empty_squeue():
+    """Result of the queue query with no jobs. SlurmManager runs squeue in a
+    thread, not through asyncio, so the subprocess mock below does not see it."""
+    return subprocess.CompletedProcess(args=("squeue",), returncode=0, stdout=b"", stderr=b"")
+
+
 def _fake_sbatch_exec(captured):
     """Return an async subprocess mock that captures sbatch args."""
     async def fake_exec_async(*args, **kwargs):
@@ -528,7 +534,10 @@ class TestSlurmManagerCommand:
         )
 
         captured = []
-        with patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)):
+        with (
+            patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)),
+            patch.object(jm, "_query_squeue", return_value=_empty_squeue()),
+        ):
             await jm.update_allocation([(model, 1)], unneeded_models=[])
 
         assert any("--container-image=nvcr.io/nvidia/pytorch:24.01-py3" in str(a) for a in captured)
@@ -550,7 +559,10 @@ class TestSlurmManagerCommand:
         model = _make_mock_model(conda_env="vllm-serving")
 
         captured = []
-        with patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)):
+        with (
+            patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)),
+            patch.object(jm, "_query_squeue", return_value=_empty_squeue()),
+        ):
             await jm.update_allocation([(model, 1)], unneeded_models=[])
 
         assert any("sbatch_script_conda.sh" in str(a) for a in captured)
@@ -572,7 +584,10 @@ class TestSlurmManagerCommand:
         )
 
         captured = []
-        with patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)):
+        with (
+            patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)),
+            patch.object(jm, "_query_squeue", return_value=_empty_squeue()),
+        ):
             await jm.update_allocation([(model, 1)], unneeded_models=[])
 
         mount_args = [a for a in captured if isinstance(a, str) and "--container-mounts=" in a]
@@ -596,7 +611,10 @@ class TestSlurmManagerCommand:
         )
 
         captured = []
-        with patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)):
+        with (
+            patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)),
+            patch.object(jm, "_query_squeue", return_value=_empty_squeue()),
+        ):
             await jm.update_allocation([(model, 1)], unneeded_models=[])
 
         mount_args = [a for a in captured if isinstance(a, str) and "--container-mounts=" in a]
@@ -617,7 +635,10 @@ class TestSlurmManagerCommand:
         model = _make_mock_model(venv_path="/venv/bin/activate")
 
         captured = []
-        with patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)):
+        with (
+            patch("asyncio.create_subprocess_exec", side_effect=_fake_sbatch_exec(captured)),
+            patch.object(jm, "_query_squeue", return_value=_empty_squeue()),
+        ):
             await jm.update_allocation([(model, 1)], unneeded_models=[])
 
         assert not any("--container-image" in str(a) for a in captured)
